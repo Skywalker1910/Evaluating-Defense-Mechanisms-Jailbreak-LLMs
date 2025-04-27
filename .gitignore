@@ -1,0 +1,7 @@
+"results/*.csv" 
+"data/*.csv" 
+"logs/" 
+"*.log" 
+"__pycache__/" 
+"*.pyc" 
+".DS_Store" 

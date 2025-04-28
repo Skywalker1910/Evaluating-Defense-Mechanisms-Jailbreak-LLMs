@@ -10,14 +10,17 @@ args = parser.parse_args()
 console = Console()
 df = pd.read_csv(args.input)
 
-total = len(df)
-successes = df['success'].sum()
-qsr = round(successes / total * 100, 2)
+# Identify model from file or content
+if 'model' in df.columns:
+    model_name = df['model'].iloc[0]
+else:
+    model_name = "Unknown Model"
 
 console.print("\n[bold underline]Evaluation Summary[/bold underline]")
-console.print(f"Total Attempts     : {total}")
-console.print(f"Successful Replies : {successes}")
-console.print(f"Query Success Rate : {qsr}%\n")
+console.print(f"Model Evaluated         : {model_name}")
+console.print(f"Total Attempts          : {len(df)}")
+console.print(f"Successful Replies      : {df['success'].sum()}")
+console.print(f"Query Success Rate (QSR): {round(df['success'].mean() * 100, 2)}%\n")
 
 if 'category' in df.columns:
     console.print("[bold underline]Success Rate by Category[/bold underline]")

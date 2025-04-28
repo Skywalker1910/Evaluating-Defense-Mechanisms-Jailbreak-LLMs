@@ -13,8 +13,15 @@ df = pd.read_csv(args.input)
 
 failure_cases = df[df['success'] == False]
 
+# Identify model from file or content
+if 'model' in df.columns:
+    model_name = df['model'].iloc[0]
+else:
+    model_name = "Unknown Model"
+
 console.print("\n[bold underline]Failure Analysis[/bold underline]")
-console.print(f"Total Failed Attempts: {len(failure_cases)}")
+console.print(f"Model Analyzed          : {model_name}")
+console.print(f"Total Failed Attempts   : {len(failure_cases)}\n")
 
 # Count types of failures from the 'status' field
 status_counts = Counter(failure_cases['status'])

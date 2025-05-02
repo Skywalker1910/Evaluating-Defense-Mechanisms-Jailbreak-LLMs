@@ -10,18 +10,18 @@ def call_openai_api(model, prompt, max_tokens=300, temperature=0.7):
             response = openai.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
-                max_completion_tokens=300  # Use new param
+                max_completion_tokens=300
             )
         else:
             response = openai.ChatCompletion.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=300
+                temperature=temperature,
+                max_tokens=max_tokens
             )
 
         latency = time.time() - start_time
-        reply = response.choices[0].message["content"]
+        reply = response.choices[0].message.content 
         token_usage = response.usage.total_tokens
         return reply, latency, token_usage, None
     except Exception as e:

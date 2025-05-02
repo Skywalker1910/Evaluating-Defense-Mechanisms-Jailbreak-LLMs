@@ -6,15 +6,20 @@ def call_openai_api(model, prompt, max_tokens=300, temperature=0.7):
     openai.api_key = os.getenv("OPENAI_API_KEY")
     start_time = time.time()
     try:
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt},
-            ],
-            max_tokens=max_tokens,
-            temperature=temperature,
-        )
+        if model in ["gpt-4o", "o3", "o3-mini"]:
+            response = openai.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_completion_tokens=300  # Use new param
+            )
+        else:
+            response = openai.ChatCompletion.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7,
+                max_tokens=300
+            )
+
         latency = time.time() - start_time
         reply = response.choices[0].message["content"]
         token_usage = response.usage.total_tokens
